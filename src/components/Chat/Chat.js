@@ -45,41 +45,24 @@ const Chat = ({ location }) => {
     };
 
 
-    // return () => {
-    //   socket.emit('disconnect');
-    //   socket.off();
-    // }
-
     socket.onclose = function(event) {
-      console.log("server disconnected")
+      socket.send(JSON.stringify({type: 'leave', payload: "User is no longer in the chat"}))
     }
 
   }, [ENDPOINT, location.search]);
 
   useEffect(() => {
 
-    // socket.onmessage = function(event) {
-    //   console.log("event received from ws", event)
-    // }
-
     socket.onmessage = message => {
       const data = JSON.parse(message.data);
       if (data.type === 'join') {
-        console.log("User joined")
+        console.log("User joined the chat")
       }
-
-
-      if (data.type === 'leave') { /* do something */ }
       if (data.type === 'message') {
+        console.log("message event received")
         setMessages([...messages, data.payload]);
       }
-      if (data.type === 'friend-request') { /* do something */ }
     };
-
-    // socket.on('roomData', ( {users}) => {
-    //   setUsers(users);
-    // })
-
   }, [messages])
 
   // function for sending messages
