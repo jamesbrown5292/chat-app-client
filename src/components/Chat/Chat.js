@@ -41,9 +41,7 @@ const Chat = ({ location }) => {
     // });
     // Question
     socket.onopen = function(event) {
-
       socket.send(JSON.stringify({type: 'join', payload: "Client connected"}))
-
     };
 
 
@@ -65,21 +63,18 @@ const Chat = ({ location }) => {
     // }
 
     socket.onmessage = message => {
-      console.log("received pre parse", message)
       const data = JSON.parse(message.data);
-      console.log("data received", data)
-      console.log("emessage received", message.data)
-      if (data.type === 'join') { /* do something */ }
+      if (data.type === 'join') {
+        console.log("User joined")
+      }
+
+
       if (data.type === 'leave') { /* do something */ }
       if (data.type === 'message') {
         setMessages([...messages, data.payload]);
       }
       if (data.type === 'friend-request') { /* do something */ }
     };
-
-    // socket.on('message', (message) => {
-    //   setMessages([...messages, message]);
-    // })
 
     // socket.on('roomData', ( {users}) => {
     //   setUsers(users);
